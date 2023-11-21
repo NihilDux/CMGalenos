@@ -23,11 +23,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField('Equipo', default=False)
     is_active = models.BooleanField('Activo', default=True)
     date_joined = models.DateTimeField('Fecha de entrada', auto_now_add=True)
-
-    # Añade related_name a los campos groups y user_permissions
-    groups = models.ManyToManyField(Permission, related_name='user_groups', blank=True)
-    user_permissions = models.ManyToManyField(Permission, related_name='user_permissions', blank=True)
-
+    
+    
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']
 

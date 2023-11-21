@@ -19,7 +19,18 @@
                 {{ error }}
             </div>
             {% endfor %}
-            <fieldset>
+            <fieldset> 
+                <div class="form-group{% if form.centro.errors %} has-error{% endif %}">
+                  <label for="{{ form.centro.auto_id }}" class="col-md-3 control-label">
+                  {{ form.centro.label }}</label>
+                  <div class="col-md-9">
+                    {% render_field form.centro class="form-control" %}
+
+                    {% for error in form.centro.errors %}
+                    <span class="help-block">{{ error }}</span>
+                    {% endfor %}
+                  </div>
+                </div>
                 <div class="form-group{% if form.medico.errors %} has-error{% endif %}">
                   <label for="{{ form.medico.auto_id }}" class="col-md-3 control-label">
                   {{ form.medico.label }}</label>

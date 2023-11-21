@@ -10,6 +10,12 @@ class Especialidad(models.Model):
     
     def __str__(self):
         return f'{self.nombre}'
+
+class Centro(models.Model):
+    nombre = models.CharField(verbose_name="nombre", max_length=200)
+
+    def __str__(self):
+        return f'{self.nombre}'
     
 class Medico(models.Model):
     nombre = models.CharField(verbose_name="nombre", max_length=200)
@@ -40,6 +46,7 @@ def validar_dia(value):
         raise ValidationError('Elija un día laboral de la semana.')
 
 class Agenda(models.Model):
+    centro = ForeignKey(Centro, on_delete=models.CASCADE, related_name='agenda')
     medico = ForeignKey(Medico, on_delete=models.CASCADE, related_name='agenda')
     dia = models.DateField(help_text="Introduzca una fecha para el calendario", validators=[validar_dia])
     

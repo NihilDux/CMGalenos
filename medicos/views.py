@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from .models import Medico, Agenda, Especialidad
+from .models import Medico, Agenda, Especialidad, Centro
 
 
 class TestMixinIsAdmin(UserPassesTestMixin):
@@ -49,14 +49,30 @@ class EspecialidadListView(LoginRequiredMixin, TestMixinIsAdmin, ListView):
 
     def get_queryset(self):
         return Especialidad.objects.all().order_by('-pk')
+############################################    
+class CentroCreateView(LoginRequiredMixin, TestMixinIsAdmin, CreateView):
 
+    model = Centro
+    login_url = 'accounts:login'
+    template_name = 'medicos/registro.html'
+    fields = ['nombre',]
+    success_url = reverse_lazy('medicos:centro_lista')
+    
+class CentroListView(LoginRequiredMixin, TestMixinIsAdmin, ListView):
+    
+    login_url = 'accounts:login'
+    template_name = 'medicos/centro_list.html'
+
+    def get_queryset(self):
+        return Centro.objects.all().order_by('-pk')
+##########################################################
 
 class AgendaCreateView(LoginRequiredMixin, TestMixinIsAdmin, CreateView):
 
     model = Agenda
     login_url = 'accounts:login'
     template_name = 'medicos/agenda_registro.html'
-    fields = ['medico', 'dia', 'horario']
+    fields = ['centro', 'medico', 'dia', 'horario']
     success_url = reverse_lazy('medicos:agenda_lista')
     
     def form_valid(self, form):
@@ -68,7 +84,7 @@ class AgendaUpdateView(LoginRequiredMixin, TestMixinIsAdmin, UpdateView):
     model = Agenda
     login_url = 'accounts:login'
     template_name = 'medicos/agenda_registro.html'
-    fields = ['medico', 'dia', 'horario']
+    fields = ['centro', 'medico', 'dia', 'horario']
     success_url = reverse_lazy('medicos:agenda_lista')
     
     def form_valid(self, form):
@@ -101,4 +117,5 @@ agenda_registro = AgendaCreateView.as_view()
 agenda_actualizar = AgendaUpdateView.as_view()
 agenda_lista = AgendaListView.as_view()
 agenda_borrar = AgendaDeleteView.as_view()
-
+centro_registro = CentroCreateView.as_view()
+centro_lista = CentroListView.as_view()

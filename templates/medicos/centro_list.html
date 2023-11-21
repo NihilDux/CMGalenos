@@ -1,0 +1,33 @@
+{% extends "accounts/index.html" %}
+
+{% block title %}
+   Centros Medicos
+{% endblock %}
+
+{% block accounts_container %}
+<h2>Centros</h2>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>
+                ID
+            </th>
+            <th>
+                Nombre
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for centro in object_list %}
+        <tr>
+            <td>
+                <a href=""># {{ centro.pk }}</a>
+            </td>
+            <td>
+                {{ centro.nombre }}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
