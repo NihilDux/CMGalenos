@@ -31,8 +31,8 @@ class Login(LoginView):
 
     model = User
     template_name = 'accounts/login.html'
-    def get_success_url(self):
-        return reverse_lazy('index')
+    #def get_success_url(self):
+        #return reverse_lazy('index')
 
 
 class Logout(LogoutView):

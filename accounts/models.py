@@ -23,8 +23,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField('Equipo', default=False)
     is_active = models.BooleanField('Activo', default=True)
     date_joined = models.DateTimeField('Fecha de entrada', auto_now_add=True)
-    
-    
+
+
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']
 
@@ -32,7 +32,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     class Meta:
         verbose_name = 'Usuario'
-        verbose_name_plural = 'Usuarios'
+        verbose_name_plural = 'Us'
 
     def __str__(self):
         return self.name or self.username
