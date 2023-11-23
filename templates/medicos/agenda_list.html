@@ -1,11 +1,11 @@
 {% extends "accounts/index.html" %}
 
 {% block title %}
-    Agendas
+    Agenda
 {% endblock %}
 
 {% block accounts_container %}
-<h2>Agendas Disponibles</h2>
+<h2>Agenda</h2>
 <table class="table table-bordered">
     <thead>
         <tr>
@@ -23,6 +23,9 @@
             </th>
             <th>
                 Horario
+            </th>
+            <th>
+                Paciente
             </th>
             <th>
                 Opciones
@@ -46,6 +49,9 @@
             </td>
             <td>
                 {{ consulta.get_horario_display }}
+            </td>
+            <td>
+                {{ consulta.nombre }}
             </td>
             <td>
                 <a href="{% url 'medicos:agendar_consulta_actualizar' consulta.id %}" class="text-primary" style="padding-left: 10px; text-decoration: none;">

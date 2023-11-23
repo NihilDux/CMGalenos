@@ -3,45 +3,10 @@ from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from .models import Medico, Agenda, Especialidad, Centro, Cliente
+from .models import Medico, Agenda, Especialidad, Centro
 
-
-from django.db import IntegrityError
-from django.http import HttpResponseRedirect
-
-class ClienteCreateView(LoginRequiredMixin ,CreateView):
-    
-    model = Cliente
-    template_name = 'medicos/clientes/registro.html'
-    fields = ['genero', 'telefono', 'run']
-    success_url = reverse_lazy('index')
-    
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        return super().form_valid(form)
-    
-# class ConsultaCreateView(CreateView):
-
-#     model = Consulta
-#     login_url = 'accounts:login'
-#     template_name = 'medicos/clientes/registro.html'
-#     fields = ['agenda']
-#     success_url = reverse_lazy('clientes:consulta_list')
-    
-#     def form_valid(self, form):
-#         try:
-#             form.instance.cliente = Cliente.objects.get(user=self.request.user)
-#             form.save()
-#         except IntegrityError as e:
-#             if 'UNIQUE constraint failed' in e.args[0]:
-#                 messages.warning(self.request, 'No puedes hacer esta cita')
-#                 return HttpResponseRedirect(reverse_lazy('clientes:consulta_create'))
-#         except Cliente.DoesNotExist:
-#             messages.warning(self.request, 'Complete su registro')
-#             return HttpResponseRedirect(reverse_lazy('medicos:cliente_registro'))
-#         messages.info(self.request, 'Cita reservada exitosamente!')
-#         return HttpResponseRedirect(reverse_lazy('medicos:consulta_list'))
-
+from email.message import EmailMessage
+import smtplib
 
 class TestMixinIsAdmin(UserPassesTestMixin):
     def test_func(self):
@@ -107,17 +72,40 @@ class CentroListView(LoginRequiredMixin, TestMixinIsAdmin, ListView):
 class AgendaCreateView(CreateView):
 
     model = Agenda
-    login_url = 'accounts:login'
+    #login_url = 'accounts:login'## Consultar esto
     template_name = 'medicos/agenda_registro.html'
-    fields = ['centro', 'medico', 'dia', 'horario']
+    #form_class = TuFormulario
+    fields = ['centro', 'medico', 'dia', 'horario', 'nombre', 'email', 'genero', 'telefono', 'run']
     success_url = reverse_lazy('medicos:agenda_lista')
     
     def form_valid(self, form):
+
         if not self.request.user.is_anonymous:
             form.instance.user = self.request.user
         else:
             form.instance.user = None
+
+        self.enviar_correo(form.cleaned_data['nombre'], form.cleaned_data['email'], form.cleaned_data['medico'], form.cleaned_data['horario'], form.cleaned_data['centro'])
+        messages.success(self.request, 'Agenda creada exitosamente.')
+
         return super().form_valid(form)
+    
+    def enviar_correo(self, nombre, email, medico, horario, centro):
+        remitente = 'cmgalenosaws@gmail.com'
+        destinatario = email
+        mensaje = f'Hola {nombre}, se ha agendado exitosamente su hora médica con el Médico {medico}, con fecha {horario} en el Centro Médico ubicado en {centro}'
+
+        email = EmailMessage()
+        email["From"] = remitente
+        email["To"] = destinatario
+        email["Subject"] = "Prueba de correo"
+        email.set_content(mensaje)
+
+        smtp = smtplib.SMTP_SSL('smtp.gmail.com')
+        smtp.login(remitente, "ughp nbhq gmxm actu")
+        smtp.sendmail(remitente, destinatario, email.as_string())
+        print("Correo enviado")
+        smtp.quit()
     
 class AgendaUpdateView(LoginRequiredMixin, TestMixinIsAdmin, UpdateView):
 

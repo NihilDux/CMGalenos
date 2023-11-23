@@ -63,6 +63,65 @@
                     {% endfor %}
                   </div>
                 </div>
+                <div class="form-group{% if form.nombre.errors %} has-error{% endif %}">
+                  <label for="{{ form.nombre.auto_id }}" class="col-md-3 control-label">
+                  {{ form.nombre.label }}</label>
+                  <div class="col-md-9">
+                    {% render_field form.nombre class="form-control" %}
+
+                    {% for error in form.nombre.errors %}
+                    <span class="help-block">{{ error }}</span>
+                    {% endfor %}
+                  </div>
+                </div>
+                
+                <div class="form-group{% if form.email.errors %} has-error{% endif %}">
+                  <label for="{{ form.email.auto_id }}" class="col-md-3 control-label">
+                  {{ form.email.label }}</label>
+                  <div class="col-md-9">
+                    {% render_field form.email class="form-control" %}
+
+                    {% for error in form.email.errors %}
+                    <span class="help-block">{{ error }}</span>
+                    {% endfor %}
+                  </div>
+                </div>
+
+                <div class="form-group{% if form.genero.errors %} has-error{% endif %}">
+                  <label for="{{ form.genero.auto_id }}" class="col-md-3 control-label">
+                  {{ form.genero.label }}</label>
+                  <div class="col-md-9">
+                    {% render_field form.genero class="form-control" %}
+
+                    {% for error in form.genero.errors %}
+                    <span class="help-block">{{ error }}</span>
+                    {% endfor %}
+                  </div>
+                </div>
+                
+                <div class="form-group{% if form.telefono.errors %} has-error{% endif %}">
+                  <label for="{{ form.telefono.auto_id }}" class="col-md-3 control-label">
+                  {{ form.telefono.label }}</label>
+                  <div class="col-md-9">
+                    {% render_field form.telefono class="form-control" %}
+
+                    {% for error in form.telefono.errors %}
+                    <span class="help-block">{{ error }}</span>
+                    {% endfor %}
+                  </div>
+                </div>
+                
+                <div class="form-group{% if form.run.errors %} has-error{% endif %}">
+                  <label for="{{ form.run.auto_id }}" class="col-md-3 control-label">
+                  {{ form.run.label }}</label>
+                  <div class="col-md-9">
+                    {% render_field form.run class="form-control" %}
+
+                    {% for error in form.run.errors %}
+                    <span class="help-block">{{ error }}</span>
+                    {% endfor %}
+                  </div>
+                </div>
                 <div class="form-group">
                   <div class="col-md-9 col-md-offset-3">
                     <button type="submit" class="btn btn-primary">Guardar</button>
