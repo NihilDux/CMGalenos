@@ -100,7 +100,7 @@ class AgendaCreateView(CreateView):
 
         remitente = 'cmgalenosaws@gmail.com'
         destinatario = email
-        mensaje = f'Hola {nombre}, se ha agendado exitosamente su hora médica con el Médico {medico}, con fecha {dia} a las {horario} en el Centro Médico ubicado en {centro}'
+        mensaje = f'Hola {nombre}, se ha agendado exitosamente su hora médica con el Médico {medico}, con fecha {dia} desde las {horario} en el Centro Médico ubicado en {centro}'
 
         email = EmailMessage()
         email["From"] = remitente
