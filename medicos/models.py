@@ -111,7 +111,7 @@ class Agenda(models.Model):
         ("M", "Masculino"),
         ("F", "Femenino"),
         ("O", "Otro"),
-        ("T", "Tanque T-64")
+        ("T", "Tanque Sovietico T-64")
     )
     
     genero = models.CharField(max_length=11, choices=GENERO,)

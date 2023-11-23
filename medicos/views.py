@@ -72,7 +72,6 @@ class CentroListView(LoginRequiredMixin, TestMixinIsAdmin, ListView):
 class AgendaCreateView(CreateView):
 
     model = Agenda
-    #login_url = 'accounts:login'## Consultar esto
     template_name = 'medicos/agenda_registro.html'
     #form_class = TuFormulario
     fields = ['centro', 'medico', 'dia', 'horario', 'nombre', 'email', 'genero', 'telefono', 'run']
@@ -84,16 +83,24 @@ class AgendaCreateView(CreateView):
             form.instance.user = self.request.user
         else:
             form.instance.user = None
+        
+        horario_value = form.cleaned_data['horario']
+        horario_display = dict(form.fields['horario'].choices).get(horario_value)
 
-        self.enviar_correo(form.cleaned_data['nombre'], form.cleaned_data['email'], form.cleaned_data['medico'], form.cleaned_data['horario'], form.cleaned_data['centro'])
+        self.enviar_correo(form.cleaned_data['nombre'], form.cleaned_data['email'], form.cleaned_data['medico'],form.cleaned_data['dia'] , horario_display, form.cleaned_data['centro'])
         messages.success(self.request, 'Agenda creada exitosamente.')
 
         return super().form_valid(form)
     
-    def enviar_correo(self, nombre, email, medico, horario, centro):
+    def enviar_correo(self, nombre, email, medico, dia, horario, centro):
+        print(f'Dia: {dia}')
+        print(f'Horario: {horario}')
+        
+
+
         remitente = 'cmgalenosaws@gmail.com'
         destinatario = email
-        mensaje = f'Hola {nombre}, se ha agendado exitosamente su hora médica con el Médico {medico}, con fecha {horario} en el Centro Médico ubicado en {centro}'
+        mensaje = f'Hola {nombre}, se ha agendado exitosamente su hora médica con el Médico {medico}, con fecha {dia} a las {horario} en el Centro Médico ubicado en {centro}'
 
         email = EmailMessage()
         email["From"] = remitente
