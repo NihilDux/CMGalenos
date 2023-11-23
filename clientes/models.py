@@ -5,6 +5,8 @@ from django.db import models
 from medicos.models import Agenda
 
 class Cliente(models.Model):
+    name = models.CharField('Nombre', max_length=100)
+    email = models.EmailField('E-mail', unique=True)
     GENERO = (
         ("M", "Masculino"),
         ("F", "Femenino")

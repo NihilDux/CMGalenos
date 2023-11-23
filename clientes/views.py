@@ -38,7 +38,7 @@ class ClienteUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_valid(form)
         
 
-class ConsultaCreateView(LoginRequiredMixin, CreateView):
+class ConsultaCreateView(CreateView):
 
     model = Consulta
     login_url = 'accounts:login'

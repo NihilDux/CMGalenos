@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from medicos.models import Especialidad, Medico, Agenda
+from medicos.models import Especialidad, Medico, Agenda, Centro, Cliente
 
 class EspecialidadAdmin(admin.ModelAdmin):
     list_display = ['nombre']
@@ -14,7 +14,19 @@ class AgendaAdmin(admin.ModelAdmin):
     list_display = [
         'dia', 'medico', 'horario'
     ]
-    
+
+class CentroAdmin (admin.ModelAdmin):
+    list_display = [
+        'nombre'
+    ]
+class ClienteAdmin (admin.ModelAdmin):
+    list_display = [
+    'nombre'
+    ]
+
+
 admin.site.register(Especialidad, EspecialidadAdmin)
 admin.site.register(Medico, MedicoAdmin)
 admin.site.register(Agenda, AgendaAdmin)
+admin.site.register(Centro, CentroAdmin)
+admin.site.register(Cliente, ClienteAdmin)

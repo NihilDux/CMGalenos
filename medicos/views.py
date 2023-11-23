@@ -3,7 +3,44 @@ from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from .models import Medico, Agenda, Especialidad, Centro
+from .models import Medico, Agenda, Especialidad, Centro, Cliente
+
+
+from django.db import IntegrityError
+from django.http import HttpResponseRedirect
+
+class ClienteCreateView(LoginRequiredMixin ,CreateView):
+    
+    model = Cliente
+    template_name = 'medicos/clientes/registro.html'
+    fields = ['genero', 'telefono', 'run']
+    success_url = reverse_lazy('index')
+    
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+    
+# class ConsultaCreateView(CreateView):
+
+#     model = Consulta
+#     login_url = 'accounts:login'
+#     template_name = 'medicos/clientes/registro.html'
+#     fields = ['agenda']
+#     success_url = reverse_lazy('clientes:consulta_list')
+    
+#     def form_valid(self, form):
+#         try:
+#             form.instance.cliente = Cliente.objects.get(user=self.request.user)
+#             form.save()
+#         except IntegrityError as e:
+#             if 'UNIQUE constraint failed' in e.args[0]:
+#                 messages.warning(self.request, 'No puedes hacer esta cita')
+#                 return HttpResponseRedirect(reverse_lazy('clientes:consulta_create'))
+#         except Cliente.DoesNotExist:
+#             messages.warning(self.request, 'Complete su registro')
+#             return HttpResponseRedirect(reverse_lazy('medicos:cliente_registro'))
+#         messages.info(self.request, 'Cita reservada exitosamente!')
+#         return HttpResponseRedirect(reverse_lazy('medicos:consulta_list'))
 
 
 class TestMixinIsAdmin(UserPassesTestMixin):
@@ -67,7 +104,7 @@ class CentroListView(LoginRequiredMixin, TestMixinIsAdmin, ListView):
         return Centro.objects.all().order_by('-pk')
 ##########################################################
 
-class AgendaCreateView(LoginRequiredMixin, TestMixinIsAdmin, CreateView):
+class AgendaCreateView(CreateView):
 
     model = Agenda
     login_url = 'accounts:login'
@@ -76,7 +113,10 @@ class AgendaCreateView(LoginRequiredMixin, TestMixinIsAdmin, CreateView):
     success_url = reverse_lazy('medicos:agenda_lista')
     
     def form_valid(self, form):
-        form.instance.user = self.request.user
+        if not self.request.user.is_anonymous:
+            form.instance.user = self.request.user
+        else:
+            form.instance.user = None
         return super().form_valid(form)
     
 class AgendaUpdateView(LoginRequiredMixin, TestMixinIsAdmin, UpdateView):
@@ -101,7 +141,7 @@ class AgendaDeleteView(LoginRequiredMixin, TestMixinIsAdmin, DeleteView):
         return reverse_lazy('medicos:agenda_lista')
 
 
-class AgendaListView(LoginRequiredMixin, TestMixinIsAdmin, ListView):
+class AgendaListView(ListView):
     
     login_url = 'accounts:login'
     template_name = 'medicos/agenda_list.html'
