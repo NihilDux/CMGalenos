@@ -101,7 +101,7 @@ def validate_real_rut(value):
     Valida que el RUT ingresado sea un RUT válido y real.
     """
     if not validate_rut(value):
-        raise ValidationError(_("El RUT ingresado no es válido."))
+        raise ValidationError(("El RUT ingresado no es válido."))
 
 class Agenda(models.Model):
     nombre = models.CharField('Nombre', max_length=100)
